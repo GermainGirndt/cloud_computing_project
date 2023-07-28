@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: irmgard-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: irmgard
+  template:
+    metadata:
+      labels:
+        app: irmgard
+    spec:
+      containers:
+        - name: irmgard
+          image: fischerjulian/irmgard:0.3.0
+          ports:
+            - containerPort: 80
+          resources:
+            requests: # min
+              cpu: 100m # MilliCPU
+              memory: 128Mi
+            limits: # max
+              cpu: 500m
+              memory: 512Mi
+          readinessProbe: # TODO: explanation for it, add liveness and startup probe as well
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5

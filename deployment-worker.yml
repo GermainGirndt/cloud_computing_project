@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: facerecognition-yolo-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: facerecognition-yolo
+  template:
+    metadata:
+      labels:
+        app: facerecognition-yolo
+    spec:
+      containers:
+        - name: facerecognition-yolo
+          image: fischerjulian/facerecognition-yolo:latest
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
