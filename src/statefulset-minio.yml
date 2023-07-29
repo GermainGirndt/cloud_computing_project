@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: minio
+spec:
+  serviceName: "minio"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minio
+  template:
+    metadata:
+      labels:
+        app: minio
+    spec:
+      containers:
+        - name: minio
+          image: minio/minio:latest
+          args:
+            - server
+            - /data
+          ports:
+            - containerPort: 9000
+          env:
+            - name: MINIO_ACCESS_KEY
+              value: "youraccesskey"
+            - name: MINIO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: your-secret-name
+                  key: your-secret-key
+          volumeMounts:
+            - name: persistent-volume-claim-minio
+              mountPath: /data
+      volumes:
+        - name: persistent-volume-claim-minio
+          persistentVolumeClaim:
+            claimName: minio-pvc

@@ -1,4 +1,6 @@
-# cloud_computing_project
+# Cloud Computing Project
+
+- To add specific environment variable using Helm, use the flag `--set postgresqlPassword=mysecretpassword`
 
 ```
 helm repo add bitnami https://charts.bitnami.com/bitnami
@@ -9,6 +11,59 @@ helm install my-release -f values.yaml bitnami/postgresql
 
 helm install my-release bitnami/rabbitmq
 
-helm install my-release bitnami/minio
+helm install my-release-3 bitnami/minio --set root-password=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY --set root-user=AKIAIOSFODNN7EXAMPLE
 
+
+### Useful Deployment Commands
+
+```
+
+kubectl rollout restart deployment/irmgard-deployment
+
+```
+
+### Useful Pods Commands
+
+```
+
+kubectl describe pods POD_NAME [-n namespace]
+kubectl delete pods irmgard-deployment-69cdf8bd5d-k8zn7
+kubectl logs irmgard-deployment-67f4c78cfb-sp9mk -n default -c irmgard --previous
+kubectl describe pod irmgard-deployment-67f4c78cfb-sp9mk -n default
+
+```
+
+```
+
+kubectl get services
+
+```
+
+- Secrets Table
+
+```
+
+kubectl get secret my-release-postgresql
+
+```
+
+- Secrets Table Data
+
+```
+
+kubectl get secret my-release-postgresql -o json
+
+```
+
+- Specific secrets data in table
+
+```
+
+kubectl get secret my-release-postgresql -o jsonpath="{.data.postgres-password}" | base64 --decode
+
+```
+
+### Concepts
+
+- Backoff: Delay for retrying an operation
 ```
