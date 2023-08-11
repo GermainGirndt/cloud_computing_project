@@ -23,12 +23,15 @@ spec:
               containerPort: 5672
           env:
             - name: RABBITMQ_DEFAULT_USER
-              value: "yourusername"
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbitmq-config
+                  key: RABBITMQ_DEFAULT_USER
             - name: RABBITMQ_DEFAULT_PASS
               valueFrom:
                 secretKeyRef:
-                  name: your-secret-name
-                  key: your-secret-key
+                  name: rabbitmq-secret
+                  key: RABBITMQ_DEFAULT_PASS
           volumeMounts:
             - name: persistent-volume-claim-rabbitmq
               mountPath: /var/lib/rabbitmq/mnesia
