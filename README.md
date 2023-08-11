@@ -51,6 +51,17 @@ kubectl describe pod irmgard-deployment-67f4c78cfb-sp9mk -n default
 
 ```
 kubectl delete pods --all
+
+kubectl delete statefulsets --all
+kubectl delete deployments --all
+kubectl delete persistentvolumeclaims --all
+```
+
+### Fresh start
+
+```
+kubectl delete statefulsets --all && kubectl delete deployments --all && kubectl delete persistentvolumeclaims --all
+
 ```
 
 ```
