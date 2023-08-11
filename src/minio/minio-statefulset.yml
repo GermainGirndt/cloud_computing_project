@@ -15,8 +15,9 @@ spec:
     spec:
       containers:
         - name: minio
-          # newest stable version from dockerhub as of 11.08.2023
-          image: minio/minio:RELEASE.2023-08-04T17-40-21Z.hotfix.bfb2c8508
+          # Latest stable version from dockerhub as of 06.08.2023
+          # Some versions were resulting in compatibility problems with MacOS (although "stable")
+          image: minio/minio:RELEASE.2023-08-04T17-40-21Z.hotfix.04968f7ec
           args:
             - server
             - /data
