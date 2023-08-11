@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: postgres-config
 data:
-  POSTGRES_HOST: "postgres"
+  POSTGRES_HOST: "postgres-service"
   POSTGRES_USERNAME: "postgres"
