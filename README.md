@@ -61,6 +61,7 @@ kubectl delete pods --all
 kubectl delete statefulsets --all
 kubectl delete deployments --all
 kubectl delete persistentvolumeclaims --all
+kubectl delete configmap --all
 ```
 
 ### Fresh start
