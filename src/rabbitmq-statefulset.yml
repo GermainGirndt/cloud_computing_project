@@ -33,9 +33,9 @@ spec:
                   name: rabbitmq-secret
                   key: RABBITMQ_DEFAULT_PASS
           volumeMounts:
-            - name: persistent-volume-claim-rabbitmq
+            - name: rabbitmq-persistent-volume-claim
               mountPath: /var/lib/rabbitmq/mnesia
       volumes:
-        - name: persistent-volume-claim-rabbitmq
+        - name: rabbitmq-persistent-volume-claim
           persistentVolumeClaim:
-            claimName: rabbitmq-pvc
+            claimName: rabbitmq-persistent-volume-claim
