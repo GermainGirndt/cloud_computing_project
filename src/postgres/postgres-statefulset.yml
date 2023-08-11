@@ -3,7 +3,7 @@ kind: StatefulSet
 metadata:
   name: postgres
 spec:
-  serviceName: "postgres"
+  serviceName: "postgres" # TODO: use the service name in postgres config (POSTGRES_HOST)
   replicas: 1
   selector:
     matchLabels:

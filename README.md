@@ -1,5 +1,11 @@
 # Cloud Computing Project
 
+# TODOs
+
+- Find out why facerecognition yolo deployment doesn't work. We can't see the logs (?)
+- Test if changing the service name to "postgres" was enough to address it as host
+- Do the 'TODOs' in the files
+
 # Notes
 
 Under MacOS minio struggles to run (3-5 fallbacks in average), but it works eventually. In linux systems there's no such a problem.
