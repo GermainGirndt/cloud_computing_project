@@ -1,5 +1,17 @@
 # Cloud Computing Project
 
+# Dependencies
+
+Fixed dependency versions on 11.08.2023 for preventing regressions due to compatibility breaking changes.
+
+# DDD
+
+File naming for a Domain Driven Design (e.g. postgres-persistent-volume-claim instead of persistent-volume-claim-postgres)
+
+# Helpful commands
+
+## Helm
+
 - To add specific environment variable using Helm, use the flag `--set postgresqlPassword=mysecretpassword`
 
 ```
@@ -13,11 +25,11 @@ helm install my-release bitnami/rabbitmq
 
 helm install my-release-3 bitnami/minio --set root-password=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY --set root-user=AKIAIOSFODNN7EXAMPLE
 
+```
 
 ### Useful Deployment Commands
 
 ```
-
 kubectl rollout restart deployment/irmgard-deployment
 
 ```
@@ -66,4 +78,7 @@ kubectl get secret my-release-postgresql -o jsonpath="{.data.postgres-password}"
 ### Concepts
 
 - Backoff: Delay for retrying an operation
+
+```
+
 ```

@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: rabbitmq
-          image: rabbitmq:3-management
+          image: rabbitmq:3.9.29-management-alpine # latest low weight rabbitmq image as of 11.08.2023
           ports:
             - name: http
               containerPort: 15672
