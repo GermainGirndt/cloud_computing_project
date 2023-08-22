@@ -125,3 +125,9 @@ In file: `~/.docker/config.json`
 ```
 
 Replace "osxkeychain" with the appropriate credential helper for your OS.
+
+```
+docker build -t germaingirndt/irmgard:0.4 .
+
+docker push germaingirndt/irmgard:0.4
+```

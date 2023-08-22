@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: irmgard
-          image: fischerjulian/irmgard:0.3.0
+          image: germaingirndt/irmgard:latest # TODO: change to fixed version
           ports:
             - containerPort: 80
           resources:
@@ -24,12 +24,13 @@ spec:
             limits: # max
               cpu: 500m
               memory: 512Mi
-          readinessProbe: # TODO: explanation for it, add liveness and startup probe as well
-            httpGet:
-              path: /health
-              port: 80
-            initialDelaySeconds: 5
-            periodSeconds: 5
+          # TODO: uncomment and debug
+          # readinessProbe: # TODO: explanation for it, add liveness and startup probe as well
+          #   httpGet:
+          #     path: /health
+          #     port: 80
+          #   initialDelaySeconds: 5
+          #   periodSeconds: 5
           env:
             - name: POSTGRES_HOST
               valueFrom:
@@ -46,3 +47,18 @@ spec:
                 secretKeyRef:
                   name: postgres-secret
                   key: POSTGRES_PASSWORD
+            - name: MINIO_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: minio-config
+                  key: MINIO_HOST
+            - name: MINIO_ACCESS_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: minio-config
+                  key: MINIO_ACCESS_KEY
+            - name: MINIO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-secret
+                  key: MINIO_SECRET_KEY

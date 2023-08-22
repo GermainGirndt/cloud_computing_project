@@ -27,7 +27,7 @@ func main() {
 	postgresUsername := os.Getenv("POSTGRES_USERNAME")
 	postgresPassword := os.Getenv("POSTGRES_PASSWORD")
 	postgresHost := os.Getenv("POSTGRES_HOST")
-
+	
 	db := pg.Connect(&pg.Options{
 		Addr:     postgresHost + ":5432", // TODO make env variable
 		User:     postgresUsername,
@@ -35,16 +35,19 @@ func main() {
 		Database: "postgres", // TODO Make env variable
 	})
 	defer db.Close()
-
+	
 	err := createSchema(db)
 	if err != nil {
 		panic(err)
 	}
-
+	
 	// MinIO Object store
-	minioEndpoint := "localhost:9000"                                  // TODO make env variable
-	minioAccessKeyID := "AKIAIOSFODNN7EXAMPLE"                         // TODO make env variable
-	minioSecretAccessKey := "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY" // TODO make env variable
+	minioHost := os.Getenv("MINIO_HOST")
+	minioPort := os.Getenv("MINIO_PORT")
+	
+	minioEndpoint := minioHost + ":" + minioPort
+	minioAccessKeyID := os.Getenv("MINIO_ACCESS_KEY")
+	minioSecretAccessKey := os.Getenv("MINIO_SECRET_KEY")
 	minioUseSSL := false
 
 	// MinIO Make a new bucket called "images".
