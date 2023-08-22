@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: facerecognition-yolo
-          image: fischerjulian/facerecognition-yolo:latest
+          image: fischerjulian/facerecognition-yolo:v0.2
           resources:
             requests:
               cpu: 100m
