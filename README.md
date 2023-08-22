@@ -18,6 +18,16 @@ Fixed dependency versions on 11.08.2023 for preventing regressions due to compat
 
 File naming for a Domain Driven Design (e.g. postgres-persistent-volume-claim instead of persistent-volume-claim-postgres)
 
+### Set local namespace configs
+
+```
+kubectl create namespace face-blurring
+
+kubectl config set-context face-blurring --namespace face-blurring --cluster=minikube --user minikube
+
+kubectl config use-context face-blurring
+```
+
 # Helpful commands
 
 ## Helm
