@@ -113,5 +113,15 @@ kubectl get secret my-release-postgresql -o jsonpath="{.data.postgres-password}"
 
 ```
 docker login
+```
+
+In file: `~/.docker/config.json`
 
 ```
+{
+    "credsStore": "osxkeychain"
+}
+
+```
+
+Replace "osxkeychain" with the appropriate credential helper for your OS.
