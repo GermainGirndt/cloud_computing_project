@@ -5,7 +5,7 @@
 - Create services files for MiniIO and RabbitMQ
 - Find out why facerecognition yolo deployment doesn't work. We can't see the logs (?)
 - Do the 'TODOs' in the files
-- Headless services for stateful sets (one of the target instances set as primary)
+- Headless services for PostgresQL and MiniIO (one of the target instances set as primary)
 
 # Notes
 
