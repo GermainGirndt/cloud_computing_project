@@ -139,5 +139,12 @@ Replace "osxkeychain" with the appropriate credential helper for your OS.
 ```
 docker build -t germaingirndt/irmgard:0.4 .
 
+docker push germaingirndt/irmgard:0.4
 
+```
+
+For supporting different architectures:
+
+```
+docker buildx build --platform linux/amd64,linux/arm64/v8 -t germaingirndt/irmgard:latest . --push
 ```
