@@ -4,3 +4,5 @@ metadata:
   name: rabbitmq-config
 data:
   RABBITMQ_DEFAULT_USER: "rabbitmqUser"
+  RABBITMQ_HOST: "rabbitmq-service" # TODO check if rabbitmq uses this host
+  RABBITMQ_PORT: "5672"

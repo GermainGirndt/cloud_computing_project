@@ -27,12 +27,14 @@ func main() {
 	postgresUsername := os.Getenv("POSTGRES_USERNAME")
 	postgresPassword := os.Getenv("POSTGRES_PASSWORD")
 	postgresHost := os.Getenv("POSTGRES_HOST")
+	postgresPort := os.Getenv("POSTGRES_PORT")
+	postgresDBName := os.Getenv("POSTGRES_DATABASE_NAME")
 	
 	db := pg.Connect(&pg.Options{
-		Addr:     postgresHost + ":5432", // TODO make env variable
+		Addr:     postgresHost + ":" + postgresPort,
 		User:     postgresUsername,
 		Password: postgresPassword,
-		Database: "postgres", // TODO Make env variable
+		Database: postgresDBName,
 	})
 	defer db.Close()
 	
@@ -51,7 +53,7 @@ func main() {
 	minioUseSSL := false
 
 	// MinIO Make a new bucket called "images".
-	bucketName := "infiles" // TODO make env variable
+	bucketName := os.Getenv("MINIO_BUCKET_NAME") 
 	location := "us-east-1" // Leave this to "us-east-1"
 
 	// Initialize minio client object.
@@ -79,7 +81,13 @@ func main() {
 	}
 
 	// RabbitMQ
-	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/") // TODO Make username, password, host and port configurable using ENV variables.
+	rabbitmqUsername := os.Getenv("RABBITMQ_DEFAULT_USER")
+	rabbitmqPassword := os.Getenv("RABBITMQ_DEFAULT_PASS")
+	rabbitmqHost := os.Getenv("RABBITMQ_HOST")
+	rabbitmqPort := os.Getenv("RABBITMQ_PORT")
+	rabbitmqEndpoint := "amqp://" + rabbitmqUsername + ":" + rabbitmqPassword + "@" + rabbitmqHost + ":" + rabbitmqPort + "/"
+
+	conn, err := amqp.Dial(rabbitmqEndpoint)
 	failOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()
 
