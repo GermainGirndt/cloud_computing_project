@@ -2,7 +2,6 @@
 
 # TODOs
 
-- Create services files for MiniIO and RabbitMQ
 - Find out why facerecognition yolo deployment doesn't work. We can't see the logs (?)
 - Do the 'TODOs' in the files
 - Headless services for PostgresQL and MiniIO (one of the target instances set as primary)
@@ -58,7 +57,7 @@ kubectl describe pod irmgard-deployment-67f4c78cfb-sp9mk -n default
 
 ```
 kubectl delete pods --all
-
+kubectl delete services --all
 kubectl delete statefulsets --all
 kubectl delete deployments --all
 kubectl delete persistentvolumeclaims --all
@@ -107,5 +106,12 @@ kubectl get secret my-release-postgresql -o jsonpath="{.data.postgres-password}"
 - Backoff: Delay for retrying an operation
 
 ```
+
+```
+
+### Docker Hub
+
+```
+docker login
 
 ```

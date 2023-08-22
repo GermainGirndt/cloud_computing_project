@@ -3,4 +3,5 @@ kind: ConfigMap
 metadata:
   name: minio-config
 data:
+  MINIO_HOST: "minio-service"
   MINIO_ACCESS_KEY: "youraccesskey"
