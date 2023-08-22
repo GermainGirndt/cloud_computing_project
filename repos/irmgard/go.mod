@@ -1,6 +1,6 @@
 module github.com/fischerjulian/irmgard
 
-go 1.14
+go 1.18 // changed from 1.14 to 1.18, since it was throwing and error
 
 require (
 	github.com/BurntSushi/toml v0.3.1 // indirect

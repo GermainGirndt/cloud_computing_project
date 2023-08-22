@@ -1,4 +1,6 @@
-FROM golang:1.14
+FROM golang:1.18 
+# changed from 1.14 to 1.18, since the other version was throwing an error
+
 
 WORKDIR /go/src/app
 
