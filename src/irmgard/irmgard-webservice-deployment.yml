@@ -62,11 +62,11 @@ spec:
                 configMapKeyRef:
                   name: minio-config
                   key: MINIO_ACCESS_KEY
-            - name: MINIO_BUCKET_NAME
+            - name: MINIO_ORIGINAL_IMAGES_BUCKET_NAME
               valueFrom:
                 configMapKeyRef:
                   name: minio-config
-                  key: MINIO_BUCKET_NAME
+                  key: MINIO_ORIGINAL_IMAGES_BUCKET_NAME
             - name: MINIO_SECRET_KEY
               valueFrom:
                 secretKeyRef:

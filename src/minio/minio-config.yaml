@@ -5,4 +5,4 @@ metadata:
 data:
   MINIO_HOST: "minio-service"
   MINIO_ACCESS_KEY: "youraccesskey"
-  MINIO_BUCKET_NAME: "infiles"
+  MINIO_ORIGINAL_IMAGES_BUCKET_NAME: "infiles"
