@@ -20,6 +20,7 @@ require 'pry'
 class ImargardWorkingHard
 
   def initialize
+    puts "--- Initializing Ruby worker..."
     @rabbit_host = ENV["RABBITMQ_HOST"] || "localhost"
     @object_store_host = ENV["OBJECT_STORE_HOST"] || "localhost"
     @object_store_access_key_id     = ENV['OBJECT_STORE_ACCESS_KEY_ID'] || 'AKIAIOSFODNN7EXAMPLE'
