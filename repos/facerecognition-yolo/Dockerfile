@@ -11,6 +11,7 @@ ENV TZ=Europe/Berlin
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Installation
+# TODO: set a fix dependency version for Python and Ruby (e.g. python=3.10.12; ruby= )
 RUN apt-get update && apt-get -y install --no-install-recommends \
   pkg-config \
   apt-utils \
