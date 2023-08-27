@@ -51,7 +51,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: postgres-config
-                  key: POSTGRES_PORT      
+                  key: POSTGRES_PORT
             - name: MINIO_HOST
               valueFrom:
                 configMapKeyRef:
@@ -91,4 +91,4 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: rabbitmq-secret
-                  key: RABBITMQ_DEFAULT_PASS                        
+                  key: RABBITMQ_DEFAULT_PASS
