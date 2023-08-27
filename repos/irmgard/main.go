@@ -81,11 +81,12 @@ func main() {
 	}
 
 	// RabbitMQ
+	const rabbitmqttProtocol = "amqp"
 	rabbitmqUsername := os.Getenv("RABBITMQ_DEFAULT_USER")
 	rabbitmqPassword := os.Getenv("RABBITMQ_DEFAULT_PASS")
 	rabbitmqHost := os.Getenv("RABBITMQ_HOST")
 	rabbitmqPort := os.Getenv("RABBITMQ_PORT")
-	rabbitmqEndpoint := "amqp://" + rabbitmqUsername + ":" + rabbitmqPassword + "@" + rabbitmqHost + ":" + rabbitmqPort + "/"
+	rabbitmqEndpoint := rabbitmqttProtocol + "://" + rabbitmqUsername + ":" + rabbitmqPassword + "@" + rabbitmqHost + ":" + rabbitmqPort + "/"
 
 	conn, err := amqp.Dial(rabbitmqEndpoint)
 	failOnError(err, "Failed to connect to RabbitMQ")
