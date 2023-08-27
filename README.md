@@ -147,4 +147,5 @@ For supporting different architectures:
 
 ```
 docker buildx build --platform linux/amd64,linux/arm64/v8 -t germaingirndt/irmgard:latest . --push
+docker buildx build --platform linux/amd64,linux/arm64/v8 -t germaingirndt/facerecognition-yolo:latest . --push
 ```
