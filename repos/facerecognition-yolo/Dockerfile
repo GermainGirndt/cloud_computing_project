@@ -28,7 +28,10 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
   libcurl4-openssl-dev \
   vim
 
-RUN gem install bundler
+# changed bundler version since install was throwing incompatibility error
+RUN gem install bundler -v 2.3.26
+
+RUN ruby -v
 
 COPY samples/bundeskanzler.jpg /workdir/object-detection-opencv/bundeskanzler.jpg
 COPY yolo_opencv.py /workdir/yolo_opencv.py
@@ -36,6 +39,12 @@ COPY yolov3.cfg /workdir/yolov3.cfg
 COPY yolov3.txt  /workdir/yolov3.txt 
 COPY yolov3.weights /workdir/yolov3.weights
 
+
+# both dependencies needed for opencv-python-headless
+RUN pip3 install scikit-build
+RUN apt-get -y install --no-install-recommends \
+  cmake \
+  python3-dev
 RUN pip3 install opencv-python
 
 # Provides an exemplary original file for manual testing.
