@@ -30,6 +30,7 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
 
 RUN gem install bundler
 
+COPY samples/bundeskanzler.jpg /workdir/object-detection-opencv/bundeskanzler.jpg
 COPY yolo_opencv.py /workdir/yolo_opencv.py
 COPY yolov3.cfg /workdir/yolov3.cfg
 COPY yolov3.txt  /workdir/yolov3.txt 
@@ -37,8 +38,8 @@ COPY yolov3.weights /workdir/yolov3.weights
 
 RUN pip3 install opencv-python
 
-# Provide an exemplary origina-file for, mainly for manual testing.
-# RUN cp /workdir/object-detection-opencv/dog.jpg /tmp/original-image.jpg
+# Provides an exemplary original file for manual testing.
+RUN cp /workdir/object-detection-opencv/bundeskanzler.jpg /tmp/original-image.jpg
 
 COPY Gemfile /workdir/Gemfile
 COPY worker.rb /workdir/worker.rb
