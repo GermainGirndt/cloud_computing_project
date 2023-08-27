@@ -22,18 +22,40 @@ class ImargardWorkingHard
   def initialize
     puts "--- Initializing Ruby worker..."
     @rabbit_host = ENV["RABBITMQ_HOST"] || "localhost"
+    @rabbit_protocol = "amqp"
+    @rabbit_user = ENV["RABBITMQ_DEFAULT_USER"] || "guest"
+    @rabbit_password = ENV["RABBITMQ_DEFAULT_PASS"] || "guest"
+    @rabbit_port = ENV["RABBITMQ_PORT"] || "5672"
+    @rabbit_image_queue_name = ENV["RABBITMQ_IMAGE_QUEUE_NAME"] || "images"
+    
     @object_store_host = ENV["OBJECT_STORE_HOST"] || "localhost"
+    @object_store_port = ENV["OBJECT_STORE_PORT"] || "9000"
     @object_store_access_key_id     = ENV['OBJECT_STORE_ACCESS_KEY_ID'] || 'AKIAIOSFODNN7EXAMPLE'
     @object_store_secret_access_key = ENV['OBJECT_STORE_SECRET_ACCESS_KEY'] || 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY'
+    @object_store_original_images_bucket_name       = ENV['OBJECT_STORE_ORIGINAL_IMAGES_BUCKET_NAME'] || 'infiles'
+    @object_store_blurred_images_bucket_name       = ENV['OBJECT_STORE_BLURRED_IMAGES_BUCKET_NAME'] || 'outfiles'
+    @object_store_default_provider       = ENV['OBJECT_STORE_DEFAULT_PROVIDER'] || 'AWS'
     
-    @object_recognition_infile = "/tmp/object_recognition/original-image.jpg"    # TODO make configurable
-    @object_recognition_outfile = "/tmp/object_recognition/filtered-image.jpg"   # TODO make configurable
+    @object_recognition_infile = ENV['OBJECT_RECOGNITION_INFILE_PATH'] || "/tmp/object_recognition/original-image.jpg"
+    @object_recognition_outfile = ENV['OBJECT_RECOGNITION_OUTFILE_PATH'] || "/tmp/object_recognition/filtered-image.jpg"
 
-    @rabbit_con = Bunny.new("amqp://guest:guest@#{@rabbit_host}:5672") #TODO make username, password, and port configurable
+
+    @rabbit_con = Bunny.new("#{@rabbit_protocol}://#{@rabbit_user}:#{@rabbit_password}@#{@rabbit_host}:#{@rabbit_port}")
+
     @rabbit_con.start
 
     @rabbit_channel = @rabbit_con.create_channel
-    @rabbit_queue = @rabbit_channel.queue("images", durable: true) # TODO make configurable
+
+    # TODO: Implement later on, whilte testing
+    # def env_to_bool(env_var)
+    #   env_value = ENV[env_var]
+    #   return true if env_value&.downcase == 'true'
+    #   return false if env_value&.downcase == 'false'
+    #   nil
+    # end
+    # puts env_to_bool('MY_ENV_VAR')
+
+    @rabbit_queue = @rabbit_channel.queue(@rabbit_image_queue_name, durable: true) # TODO make configurable
 
     @obj_store_con = connect_to_object_store
   end
@@ -47,7 +69,7 @@ class ImargardWorkingHard
     #   https://www.rubydoc.info/github/fog/fog-aws
     # MinIO emulates the AWS API > use the AWS adapter
     connection = Fog::Storage.new({
-      provider:              'AWS',                               # TODO make other providers configurable
+      provider:              @object_store_default_provider,
       aws_access_key_id:     @object_store_access_key_id,
       aws_secret_access_key: @object_store_secret_access_key,
       region:                'us-east-1', # ,                     # optional, defaults to 'us-east-1',
@@ -55,15 +77,15 @@ class ImargardWorkingHard
                                                                   # minio configuration
       host:                  @object_store_host,                  # Provide your host name here, otherwise fog-aws defaults to
                                                                   # s3.amazonaws.com
-      endpoint:              "http://#{@object_store_host}:9000", # TODO make port configurable
+      endpoint:              "http://#{@object_store_host}:#{@object_store_port}",
       path_style:            true,                                # Required
   })
     return connection
   end
 
-  def retrieve_object_recognition_infile_from_object_store(filepath)    
+  def retrieve_object_recognition_infile_from_object_store(filepath)
     puts "\t\tStarting to retrieve object #{filepath} and storing it to #{@object_recognition_infile}..."
-    directory = @obj_store_con.directories.get('infiles') # TODO make configurable
+    directory = @obj_store_con.directories.get(@object_store_original_images_bucket_name)
     remote_file = directory.files.get(filepath)
 
     # Create local file from the remote file    
@@ -78,7 +100,7 @@ class ImargardWorkingHard
   def upload_object_recognition_outfile_to_object_store(object_name)    
     puts "\t\tStarting to upload object #{object_name} from local file #{@object_recognition_outfile}"
     @obj_store_con.put_object(
-        'outfiles', # TODO make configurable
+        @object_store_blurred_images_bucket_name, 
         object_name,
 
         # Only recommendable for small objects

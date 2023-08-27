@@ -22,3 +22,74 @@ spec:
             limits:
               cpu: 500m
               memory: 512Mi
+          env:
+            - name: OBJECT_STORE_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: minio-config
+                  key: MINIO_HOST
+            - name: OBJECT_STORE_ACCESS_KEY_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: minio-config
+                  key: MINIO_ACCESS_KEY
+            - name: OBJECT_STORE_ORIGINAL_IMAGES_BUCKET_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: minio-config
+                  key: MINIO_ORIGINAL_IMAGES_BUCKET_NAME
+            - name: OBJECT_STORE_BLURRED_IMAGES_BUCKET_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: minio-config
+                  key: MINIO_BLURRED_IMAGES_BUCKET_NAME
+            - name: OBJECT_STORE_DEFAULT_PROVIDER
+              valueFrom:
+                configMapKeyRef:
+                  name: minio-config
+                  key: MINIO_DEFAULT_PROVIDER
+            - name: OBJECT_STORE_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: minio-config
+                  key: MINIO_DEFAULT_PORT
+            - name: OBJECT_STORE_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-secret
+                  key: MINIO_SECRET_KEY
+            - name: RABBITMQ_DEFAULT_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbitmq-config
+                  key: RABBITMQ_DEFAULT_USER
+            - name: RABBITMQ_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbitmq-config
+                  key: RABBITMQ_HOST
+            - name: RABBITMQ_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbitmq-config
+                  key: RABBITMQ_PORT
+            - name: RABBITMQ_IMAGE_QUEUE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbitmq-config
+                  key: RABBITMQ_IMAGE_QUEUE_NAME
+            - name: RABBITMQ_DEFAULT_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: RABBITMQ_DEFAULT_PASS
+            - name: OBJECT_RECOGNITION_INFILE_PATH
+              valueFrom:
+                configMapKeyRef:
+                  name: yolo-worker-config
+                  key: OBJECT_RECOGNITION_INFILE_PATH
+            - name: OBJECT_RECOGNITION_OUTFILE_PATH
+              valueFrom:
+                configMapKeyRef:
+                  name: yolo-worker-config
+                  key: OBJECT_RECOGNITION_OUTFILE_PATH

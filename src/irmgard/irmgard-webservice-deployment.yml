@@ -67,6 +67,11 @@ spec:
                 configMapKeyRef:
                   name: minio-config
                   key: MINIO_ORIGINAL_IMAGES_BUCKET_NAME
+            - name: MINIO_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: minio-config
+                  key: MINIO_DEFAULT_PORT
             - name: MINIO_SECRET_KEY
               valueFrom:
                 secretKeyRef:
@@ -87,6 +92,11 @@ spec:
                 configMapKeyRef:
                   name: rabbitmq-config
                   key: RABBITMQ_PORT
+            - name: RABBITMQ_IMAGE_QUEUE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbitmq-config
+                  key: RABBITMQ_IMAGE_QUEUE_NAME
             - name: RABBITMQ_DEFAULT_PASS
               valueFrom:
                 secretKeyRef:

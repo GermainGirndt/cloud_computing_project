@@ -87,6 +87,7 @@ func main() {
 	rabbitmqHost := os.Getenv("RABBITMQ_HOST")
 	rabbitmqPort := os.Getenv("RABBITMQ_PORT")
 	rabbitmqEndpoint := rabbitmqttProtocol + "://" + rabbitmqUsername + ":" + rabbitmqPassword + "@" + rabbitmqHost + ":" + rabbitmqPort + "/"
+	rabbitmqImageQueueName := os.Getenv("RABBITMQ_IMAGE_QUEUE_NAME")
 
 	conn, err := amqp.Dial(rabbitmqEndpoint)
 	failOnError(err, "Failed to connect to RabbitMQ")
@@ -99,7 +100,7 @@ func main() {
 
 	// RabbitMQ - Queue
 	q, err := ch.QueueDeclare(
-		"images", // name
+		rabbitmqImageQueueName, // name
 		true,     // durable
 		false,    // delete when unused
 		false,    // exclusive

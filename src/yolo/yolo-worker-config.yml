@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: yolo-worker-config
+data:
+  OBJECT_RECOGNITION_INFILE_PATH: "/tmp/object_recognition/original-image.jpg"
+  OBJECT_RECOGNITION_OUTFILE_PATH: "/tmp/object_recognition/filtered-image.jpg"
