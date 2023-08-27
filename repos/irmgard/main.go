@@ -53,7 +53,7 @@ func main() {
 	minioUseSSL := false
 
 	// MinIO Make a new bucket called "images".
-	bucketName := os.Getenv("MINIO_BUCKET_NAME") 
+	bucketName := os.Getenv("MINIO_ORIGINAL_IMAGES_BUCKET_NAME") 
 	location := "us-east-1" // Leave this to "us-east-1"
 
 	// Initialize minio client object.
