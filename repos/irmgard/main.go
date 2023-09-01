@@ -161,6 +161,7 @@ func main() {
 		// Upload the zip file with FPutObject
 		n, err := minioClient.PutObject(bucketName, objectName, objectReader, objectSize, minio.PutObjectOptions{})
 		if err != nil {
+			log.Fatalln("Following fatal error was thrown:")
 			log.Fatalln(err)
 		}
 
