@@ -2,9 +2,11 @@
 
 # TODOs
 
-- Find out why facerecognition yolo deployment doesn't work. We can't see the logs (?)
-- Do the 'TODOs' in the files
 - Headless services for PostgresQL and MiniIO (one of the target instances set as primary)
+- Test the communication between irmgard -> rabbitmq -> yolo
+- Test the communication between irmgard -> minio
+- Test the communication between yolo -> minio
+- Install the missing dependency for yolo_opencv and test if it worked: libgtk2.0-dev and pkg-config
 
 # Notes
 
