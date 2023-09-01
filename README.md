@@ -152,6 +152,10 @@ docker buildx build --platform linux/amd64,linux/arm64/v8 -t germaingirndt/facer
 
 ### Presentation
 
+# Topics
+
+- Project structure (monorepo + DDD)
+
 # Challenges
 
 - Since in the log was not clear where the error was, it took us time to understand, that the error was caused by Golang's variable scope (a variable was defined in the main method and we tried to reference it in another method; the error message didn't say that the variable wasn't defined, just the "Bucket name cannot be empty")
