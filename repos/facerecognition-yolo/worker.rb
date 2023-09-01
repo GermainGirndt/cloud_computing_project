@@ -38,7 +38,7 @@ class ImargardWorkingHard
     
     @object_recognition_infile = ENV['OBJECT_RECOGNITION_INFILE_PATH'] || "/tmp/object_recognition/original-image.jpg"
     @object_recognition_outfile = ENV['OBJECT_RECOGNITION_OUTFILE_PATH'] || "/tmp/object_recognition/filtered-image.jpg"
-
+    @object_recognition_content_type_to_be_stored = ENV['OBJECT_RECOGNITION_CONTENT_TYPE_TO_BE_STORED'] || "image/jpeg"
 
     @rabbit_con = Bunny.new("#{@rabbit_protocol}://#{@rabbit_user}:#{@rabbit_password}@#{@rabbit_host}:#{@rabbit_port}")
 
@@ -46,23 +46,14 @@ class ImargardWorkingHard
 
     @rabbit_channel = @rabbit_con.create_channel
 
-    # TODO: Implement later on, whilte testing
-    # def env_to_bool(env_var)
-    #   env_value = ENV[env_var]
-    #   return true if env_value&.downcase == 'true'
-    #   return false if env_value&.downcase == 'false'
-    #   nil
-    # end
-    # puts env_to_bool('MY_ENV_VAR')
-
-    @rabbit_queue = @rabbit_channel.queue(@rabbit_image_queue_name, durable: true) # TODO make configurable
+    @rabbit_is_image_durable = string_to_bool(ENV['IS_MESSAGE_QUEUE_IMAGE_DURABLE'] || 'true')
+    @rabbit_queue = @rabbit_channel.queue(@rabbit_image_queue_name, durable: @rabbit_is_image_durable) 
 
     @obj_store_con = connect_to_object_store
   end
 
   protected
 
-  #TODO Make fog credentials configurable
   def connect_to_object_store
     # Fog AWS Gem. See: 
     #   https://github.com/fog/fog-aws
@@ -105,7 +96,7 @@ class ImargardWorkingHard
 
         # Only recommendable for small objects
         File.read(@object_recognition_outfile),
-        content_type: "image/jpeg" # TODO make configurable
+        content_type: @object_recognition_content_type_to_be_stored 
       )
   end
 
@@ -152,6 +143,16 @@ class ImargardWorkingHard
       puts "\tDone processing."
     end
     puts "Irmgard worked hard. Now going to rest a bit ..."
+  end
+  
+  def string_to_bool(str)
+    case str.downcase
+    when "true" then true
+    when "false" then false
+    else
+      # Handle other cases or raise an error
+      raise ArgumentError, "Invalid string for boolean conversion: " + str
+    end
   end
 end
 
