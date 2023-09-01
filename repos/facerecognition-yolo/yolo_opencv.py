@@ -26,7 +26,10 @@ def get_output_layers(net):
     
     layer_names = net.getLayerNames()
     
-    output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
+    # Reshaping layers due to  "IndexError: invalid index to scalar variable."
+    #output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
+    reshaped_unconnected_layers = net.getUnconnectedOutLayers().reshape(-1, 1)
+    output_layers = [layer_names[i[0] - 1] for i in reshaped_unconnected_layers]
 
     return output_layers
 
@@ -57,7 +60,10 @@ def draw_blur(img, class_id, confidence, x, y, x_plus_w, y_plus_h):
         
         img[int(y):int(y_plus_h), int(x):int(x_plus_w)] = cv2.medianBlur(img[int(y):int(y_plus_h), int(x):int(x_plus_w)] ,blurval)
 
-    
+
+print("Printing parsed args:")
+print(args)
+
 image = cv2.imread(args.image)
 
 Width = image.shape[1]
@@ -76,6 +82,13 @@ net = cv2.dnn.readNet(args.weights, args.config)
 blob = cv2.dnn.blobFromImage(image, scale, (416,416), (0,0,0), True, crop=False)
 
 net.setInput(blob)
+
+#Debugging
+#print("Unconnected Out Layers: ", net.getUnconnectedOutLayers())
+#print("Layer Names: ", net.getLayerNames())
+#print("Type of Unconnected Out Layers: ", type(net.getUnconnectedOutLayers()))
+#print("Shape of Unconnected Out Layers: ", net.getUnconnectedOutLayers().shape)
+
 
 outs = net.forward(get_output_layers(net))
 
