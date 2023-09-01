@@ -53,7 +53,7 @@ func main() {
 	minioUseSSL := false
 
 	// MinIO Make a new bucket called "images".
-	bucketName := os.Getenv("MINIO_ORIGINAL_IMAGES_BUCKET_NAME") 
+	var bucketName string = os.Getenv("MINIO_ORIGINAL_IMAGES_BUCKET_NAME")
 	location := "us-east-1" // Leave this to "us-east-1"
 
 	// Initialize minio client object.
@@ -159,7 +159,7 @@ func main() {
 		fmt.Printf("Fileupload: Receiving file with path: " + fileName + "\n")
 
 		// Upload the zip file with FPutObject
-		n, err := minioClient.PutObject(os.Getenv("MINIO_ORIGINAL_IMAGES_BUCKET_NAME"), objectName, objectReader, objectSize, minio.PutObjectOptions{})
+		n, err := minioClient.PutObject(bucketName, objectName, objectReader, objectSize, minio.PutObjectOptions{})
 		if err != nil {
 			log.Fatalln("Following fatal error was thrown:")
 			log.Fatalln(err)
