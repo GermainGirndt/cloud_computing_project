@@ -5,3 +5,5 @@ metadata:
 data:
   OBJECT_RECOGNITION_INFILE_PATH: "/tmp/object_recognition/original-image.jpg"
   OBJECT_RECOGNITION_OUTFILE_PATH: "/tmp/object_recognition/filtered-image.jpg"
+  IS_MESSAGE_QUEUE_IMAGE_DURABLE: "true"
+  OBJECT_RECOGNITION_CONTENT_TYPE_TO_BE_STORED: "image/jpeg"

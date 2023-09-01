@@ -78,11 +78,21 @@ spec:
                 configMapKeyRef:
                   name: rabbitmq-config
                   key: RABBITMQ_IMAGE_QUEUE_NAME
+            - name: IS_MESSAGE_QUEUE_IMAGE_DURABLE
+              valueFrom:
+                configMapKeyRef:
+                  name: yolo-worker-config
+                  key: IS_MESSAGE_QUEUE_IMAGE_DURABLE
             - name: RABBITMQ_DEFAULT_PASS
               valueFrom:
                 secretKeyRef:
                   name: rabbitmq-secret
                   key: RABBITMQ_DEFAULT_PASS
+            - name: OBJECT_RECOGNITION_CONTENT_TYPE_TO_BE_STORED
+              valueFrom:
+                configMapKeyRef:
+                  name: yolo-worker-config
+                  key: OBJECT_RECOGNITION_CONTENT_TYPE_TO_BE_STORED
             - name: OBJECT_RECOGNITION_INFILE_PATH
               valueFrom:
                 configMapKeyRef:
