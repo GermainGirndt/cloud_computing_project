@@ -119,7 +119,8 @@ for out in outs:
 indices = cv2.dnn.NMSBoxes(boxes, confidences, conf_threshold, nms_threshold)
 
 for i in indices:
-    i = i[0]
+    # Corrected, because "i" can also be a integer (instead of array)
+    i = i[0] if isinstance(i, (list, np.ndarray)) else i
     box = boxes[i]
     x = box[0]
     y = box[1]

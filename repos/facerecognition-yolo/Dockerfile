@@ -48,7 +48,8 @@ RUN apt-get -y install --no-install-recommends \
 RUN pip3 install opencv-python
 
 # Provides an exemplary original file for manual testing.
-RUN cp /workdir/object-detection-opencv/bundeskanzler.jpg /tmp/original-image.jpg
+RUN mkdir /tmp/object_recognition
+RUN cp /workdir/object-detection-opencv/bundeskanzler.jpg /tmp/object_recognition/original-image.jpg
 
 COPY Gemfile /workdir/Gemfile
 COPY worker.rb /workdir/worker.rb
@@ -56,6 +57,6 @@ COPY worker.rb /workdir/worker.rb
 RUN bundle
 
 # Recommended CMD
-# cd object-detection-opencv && python3 yolo_opencv.py --image /tmp/original-image.jpg --config yolov3.cfg --weights ../yolov3.weights --classes yolov3.txt 
+# cd /workdir/ && python3 yolo_opencv.py --image /tmp/object_recognition/original-image.jpg --config yolov3.cfg --weights yolov3.weights --classes yolov3.txt 
 
 CMD ["ruby", "worker.rb"]
