@@ -149,3 +149,10 @@ For supporting different architectures:
 docker buildx build --platform linux/amd64,linux/arm64/v8 -t germaingirndt/irmgard:latest . --push
 docker buildx build --platform linux/amd64,linux/arm64/v8 -t germaingirndt/facerecognition-yolo:latest . --push
 ```
+
+### Presentation
+
+# Challenges
+
+- Since in the log was not clear where the error was, it took us time to understand, that the error was caused by Golang's variable scope (a variable was defined in the main method and we tried to reference it in another method; the error message didn't say that the variable wasn't defined, just the "Bucket name cannot be empty")
+- Since we use two difference architectures (amd x64 for ubuntu and arm for MacOS), we faced problems running the containers. We solved it by build for both architectures, but that took a lot of time (in the worst case 8h for building the yolo project)
