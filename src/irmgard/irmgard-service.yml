@@ -3,6 +3,7 @@ kind: Service
 metadata:
   name: irmgard-service
 spec:
+  type: LoadBalancer
   selector:
     app: irmgard
   ports:
