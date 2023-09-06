@@ -12,6 +12,10 @@
 
 Under MacOS minio struggles to run (3-5 fallbacks in average), but it works eventually. In linux systems there's no such a problem.
 
+# Testing Set-up:
+
+For testing locally, run `minikube tunnel`and configure your DNS in /etc/hosts to point your hostname (e.g. `kubernetes.docker.internal`) to `127.0.0.1`
+
 # Dependencies
 
 Fixed dependency versions on 11.08.2023 for preventing regressions due to compatibility breaking changes.
