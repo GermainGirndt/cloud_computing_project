@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: irmgard-deployment
+  name: irmgard
 spec:
   replicas: 1
   selector:
