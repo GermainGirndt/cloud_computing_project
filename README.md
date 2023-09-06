@@ -116,6 +116,7 @@ kubectl get secret my-release-postgresql -o jsonpath="{.data.postgres-password}"
 ### Concepts
 
 - Backoff: Delay for retrying an operation
+- Service: OSI Layer 4 router and - if multiple endpoints are available - load balancer.
 
 ```
 
