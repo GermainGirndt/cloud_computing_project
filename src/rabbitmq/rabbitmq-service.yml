@@ -8,4 +8,4 @@ spec:
   ports:
     - protocol: TCP
       port: 5672
-      targetPort: 5672
+      targetPort: amqp # this name is mapped to Port name defined in sfs 
