@@ -3,6 +3,8 @@
 # TODOs
 
 1 - Headless services for PostgresQL and MiniIO (one of the target instances set as primary)
+=> temporary used the version of yolo to v0.4, can be changed again to latest if needed
+=> changed service names for minio and postgres (=> different hostname in config maps, check if errors occure)
 2 - Test the communication between irmgard -> rabbitmq -> yolo
 3 - Test the communication between irmgard -> minio
 4 - Test the communication between yolo -> minio
@@ -68,6 +70,7 @@ kubectl describe pods POD_NAME [-n namespace]
 kubectl delete pods irmgard-deployment-69cdf8bd5d-k8zn7
 kubectl logs irmgard-deployment-67f4c78cfb-sp9mk -n default -c irmgard --previous
 kubectl describe pod irmgard-deployment-67f4c78cfb-sp9mk -n default
+kubectl label pod postgres-0 role=primary, labels a pod so the headless svc can find the primary pod 
 
 ```
 
