@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: facerecognition-yolo-deployment
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: facerecognition-yolo
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: facerecognition-yolo
-          image: germaingirndt/facerecognition-yolo:latest #TODO: set fixed version
+          image: germaingirndt/facerecognition-yolo:0.4 #TODO: set fixed version
           resources:
             requests:
               cpu: 100m
