@@ -3,10 +3,7 @@
 # TODOs
 
 1 - Headless services for PostgresQL and MiniIO (one of the target instances set as primary)
-2 - Test the communication between irmgard -> rabbitmq -> yolo
-3 - Test the communication between irmgard -> minio
-4 - Test the communication between yolo -> minio
-5 - Install the missing dependency for yolo_opencv and test if it worked: libgtk2.0-dev and pkg-config
+2 - Install the missing dependency for yolo_opencv and test if it worked: libgtk2.0-dev and pkg-config
 
 # Notes
 
