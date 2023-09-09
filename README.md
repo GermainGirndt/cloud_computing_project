@@ -3,14 +3,15 @@
 # TODOs
 
 1 - Headless services for PostgresQL and MiniIO (one of the target instances set as primary)
-2 - Test the communication between irmgard -> rabbitmq -> yolo
-3 - Test the communication between irmgard -> minio
-4 - Test the communication between yolo -> minio
-5 - Install the missing dependency for yolo_opencv and test if it worked: libgtk2.0-dev and pkg-config
+2 - Install the missing dependency for yolo_opencv and test if it worked: libgtk2.0-dev and pkg-config
 
 # Notes
 
 Under MacOS minio struggles to run (3-5 fallbacks in average), but it works eventually. In linux systems there's no such a problem.
+
+# Testing Set-up:
+
+For testing locally, run `minikube tunnel`and configure your DNS in /etc/hosts to point your hostname (e.g. `kubernetes.docker.internal`) to `127.0.0.1`
 
 # Dependencies
 
@@ -116,6 +117,7 @@ kubectl get secret my-release-postgresql -o jsonpath="{.data.postgres-password}"
 ### Concepts
 
 - Backoff: Delay for retrying an operation
+- Service: OSI Layer 4 router and - if multiple endpoints are available - load balancer.
 
 ```
 
@@ -163,3 +165,4 @@ docker buildx build --platform linux/amd64,linux/arm64/v8 -t germaingirndt/facer
 - Since in the log was not clear where the error was, it took us time to understand, that the error was caused by Golang's variable scope (a variable was defined in the main method and we tried to reference it in another method; the error message didn't say that the variable wasn't defined, just the "Bucket name cannot be empty")
 - Since we use two difference architectures (amd x64 for ubuntu and arm for MacOS), we faced problems running the containers. We solved it by build for both architectures, but that took a lot of time (in the worst case 8h for building the yolo project)
 - Minio works locally and has the same API as AWS. Because of that with kubernetes we have the flexibility to switch to AWS very easily by creating another config map with specifications for AWS
+- Communication with the cluster from outside. Irmgard with LoadBalancer seems to be the most straight forward way. Other approaches (e.g. NodePort) requires configuring ingress
