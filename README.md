@@ -5,10 +5,6 @@
 1 - Headless services for PostgresQL and MiniIO (one of the target instances set as primary)
 => temporary used the version of yolo to v0.4, can be changed again to latest if needed
 => changed service names for minio and postgres (=> different hostname in config maps, check if errors occure)
-2 - Test the communication between irmgard -> rabbitmq -> yolo
-3 - Test the communication between irmgard -> minio
-4 - Test the communication between yolo -> minio
-5 - Install the missing dependency for yolo_opencv and test if it worked: libgtk2.0-dev and pkg-config
 
 # Notes
 
@@ -174,3 +170,4 @@ docker buildx build --platform linux/amd64,linux/arm64/v8 -t germaingirndt/facer
 - debate over pvc template or pvc itself in sfs through a yaml file, synchronisation, minio and 
 postgres vs rabbitmq
 - setting up probes (finding out which ports to use for tcp probe), finding fitting combinations of probes and waiting times 
+- Communication with the cluster from outside. Irmgard with LoadBalancer seems to be the most straight forward way. Other approaches (e.g. NodePort) requires configuring ingress

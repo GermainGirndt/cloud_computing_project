@@ -71,6 +71,30 @@ class ImargardWorkingHard
       endpoint:              "http://#{@object_store_host}:#{@object_store_port}",
       path_style:            true,                                # Required
   })
+
+    # Ensure the original images bucket exists
+    if connection.directories.get(@object_store_original_images_bucket_name).nil?
+      puts "Bucket does not exist, creating: #{@object_store_original_images_bucket_name}"
+      connection.directories.create(
+        key:    @object_store_original_images_bucket_name,
+        public: false
+      )
+    else
+      puts "Bucket exists, doing nothing: #{@object_store_original_images_bucket_name}"
+    end
+
+    # Ensure the blurred images bucket exists
+    if connection.directories.get(@object_store_blurred_images_bucket_name).nil?
+      puts "Bucket does not exist, creating: #{@object_store_blurred_images_bucket_name}"
+      connection.directories.create(
+        key:    @object_store_blurred_images_bucket_name,
+        public: false
+      )
+    else
+      puts "Bucket exists, doing nothing: #{@object_store_blurred_images_bucket_name}"
+    end
+
+
     return connection
   end
 
