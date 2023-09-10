@@ -3,7 +3,7 @@ kind: StatefulSet
 metadata:
   name: postgres
 spec:
-  serviceName: "postgres-primary"
+  serviceName: "postgres-service"
   replicas: 3
   selector:
     matchLabels:
@@ -17,7 +17,27 @@ spec:
         - name: postgres
           image: postgres:15.3-alpine3.18 # latest low weight postgres image as of 11.08.2023
           ports:
-            - containerPort: 5432
+            - name: postgres-port
+              containerPort: 5432
+          startupProbe:
+            tcpSocket:
+              port: 5432  # change port for failure demonstration
+            periodSeconds: 10
+            failureThreshold: 3
+            timeoutSeconds: 2  
+          readinessProbe:
+            tcpSocket:
+              port: 5432
+            initialDelaySeconds: 5  
+            periodSeconds: 5
+            timeoutSeconds: 2
+          livenessProbe:
+            tcpSocket:
+              port: 5432
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 2  
+            timeoutSeconds: 2
           env:
             - name: POSTGRES_USER
               valueFrom:
@@ -43,6 +63,19 @@ spec:
             - name: postgres-persistent-volume-claim
               mountPath: /var/lib/postgresql/data
       volumes:
-        - name: postgres-persistent-volume-claim
+        - name: postgres-persistent-volume-claim   # redundancy for availability (3 pods for the same pv/data)
           persistentVolumeClaim:
             claimName: postgres-persistent-volume-claim
+#volumeClaimTemplates:
+#   - metadata:
+#      name: postgres-persistent-volume
+#     spec:
+#       accessModes: 
+#         - ReadWriteOnce
+#       resources:
+#         requests:
+#           storage: 10Gi
+# would be the optimal way to do it if we 
+# would have time for the synchronization
+# => each pod own pv => exact mapping for each pod, primary writes only with headless svc
+# => no problems regarding shared memory, consistency

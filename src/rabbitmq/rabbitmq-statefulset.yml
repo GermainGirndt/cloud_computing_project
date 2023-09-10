@@ -21,6 +21,25 @@ spec:
               containerPort: 15672
             - name: amqp
               containerPort: 5672
+          startupProbe:
+            tcpSocket:
+              port: 5672  # change port for failure demonstration
+            periodSeconds: 10
+            failureThreshold: 3
+            timeoutSeconds: 2  
+          readinessProbe:
+            tcpSocket:
+              port: 5672
+            initialDelaySeconds: 5  
+            periodSeconds: 5
+            timeoutSeconds: 2
+          livenessProbe:
+            tcpSocket:
+              port: 5672
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 2  
+            timeoutSeconds: 2
           env:
             - name: RABBITMQ_DEFAULT_USER
               valueFrom:
@@ -36,6 +55,18 @@ spec:
             - name: rabbitmq-persistent-volume-claim
               mountPath: /var/lib/rabbitmq/mnesia
       volumes:
-        - name: rabbitmq-persistent-volume-claim
-          persistentVolumeClaim:
+        - name: rabbitmq-persistent-volume-claim   # now multiple "ways/roads (pods)"
+          persistentVolumeClaim:                   # can be used to retrieve/aknowledge messages/tasks
             claimName: rabbitmq-persistent-volume-claim
+#volumeClaimTemplates:
+#   - metadata:
+#      name: rabbitmq-persistent-volume
+#     spec:
+#       accessModes: 
+#         - ReadWriteOnce
+#       resources:
+#         requests:
+#           storage: 10Gi
+# would be the optimal way to do it if we would have time for the synchronization
+# => each pod own pv => exact mapping for each pod, primary only manages requests/tasks with headless svc
+# => no problems regarding shared memory, consistency

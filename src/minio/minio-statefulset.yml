@@ -3,8 +3,8 @@ kind: StatefulSet
 metadata:
   name: minio
 spec:
-  serviceName: "minio-primary"
-  replicas: 3
+  serviceName: "minio-service"
+  replicas: 3 # TODO synchonisation to be implemented
   selector:
     matchLabels:
       app: minio
@@ -22,7 +22,27 @@ spec:
             - server
             - /data
           ports:
-            - containerPort: 9000
+            - name: minio-port
+              containerPort: 9000
+          startupProbe:
+            tcpSocket:
+              port: 9000  # change port for failure demonstration
+            periodSeconds: 10
+            failureThreshold: 3
+            timeoutSeconds: 2  
+          readinessProbe:
+            tcpSocket:
+              port: 9000
+            initialDelaySeconds: 5  
+            periodSeconds: 5
+            timeoutSeconds: 2
+          livenessProbe:
+            tcpSocket:
+              port: 9000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 2  
+            timeoutSeconds: 2
           env:
             - name: MINIO_ACCESS_KEY
               valueFrom:
@@ -38,6 +58,19 @@ spec:
             - name: minio-persistent-volume-claim
               mountPath: /data
       volumes:
-        - name: minio-persistent-volume-claim
+        - name: minio-persistent-volume-claim    # redundancy for availability (3 pods for the same pv/data)
           persistentVolumeClaim:
             claimName: minio-persistent-volume-claim
+#volumeClaimTemplates:
+#   - metadata:
+#      name: minio-persistent-volume
+#     spec:
+#       accessModes: 
+#         - ReadWriteOnce
+#       resources:
+#         requests:
+#           storage: 10Gi
+# would be the optimal way to do it if we 
+# would have time for the synchronization
+# => each pod own pv => exact mapping for each pod, primary writes only with headless svc
+# => no problems regarding shared memory, consistency
