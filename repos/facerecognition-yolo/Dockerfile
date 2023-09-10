@@ -14,6 +14,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # TODO: set a fix dependency version for Python and Ruby (e.g. python=3.10.12; ruby= )
 RUN apt-get update && apt-get -y install --no-install-recommends \
   pkg-config \
+  libgtk2.0-dev \
   apt-utils \
   autoconf \
   automake \
@@ -49,6 +50,7 @@ RUN pip3 install opencv-python
 
 # Provides an exemplary original file for manual testing.
 RUN mkdir /tmp/object_recognition
+
 RUN cp /workdir/object-detection-opencv/bundeskanzler.jpg /tmp/object_recognition/original-image.jpg
 
 COPY Gemfile /workdir/Gemfile
