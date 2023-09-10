@@ -16,6 +16,7 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
   python3 python3-numpy python3-setuptools python3-pip\
   libopencv-dev opencv-data \
   pkg-config \
+  libgtk2.0-dev \
   apt-utils \
   autoconf \
   automake \
@@ -50,6 +51,7 @@ COPY yolov3.weights /workdir/yolov3.weights
 
 # Provides an exemplary original file for manual testing.
 RUN mkdir /tmp/object_recognition
+
 RUN cp /workdir/object-detection-opencv/bundeskanzler.jpg /tmp/object_recognition/original-image.jpg
 
 COPY Gemfile /workdir/Gemfile
