@@ -171,3 +171,6 @@ docker buildx build --platform linux/amd64,linux/arm64/v8 -t germaingirndt/facer
 - Since in the log was not clear where the error was, it took us time to understand, that the error was caused by Golang's variable scope (a variable was defined in the main method and we tried to reference it in another method; the error message didn't say that the variable wasn't defined, just the "Bucket name cannot be empty")
 - Since we use two difference architectures (amd x64 for ubuntu and arm for MacOS), we faced problems running the containers. We solved it by build for both architectures, but that took a lot of time (in the worst case 8h for building the yolo project)
 - Minio works locally and has the same API as AWS. Because of that with kubernetes we have the flexibility to switch to AWS very easily by creating another config map with specifications for AWS
+- debate over pvc template or pvc itself in sfs through a yaml file, synchronisation, minio and 
+postgres vs rabbitmq
+- setting up probes (finding out which ports to use for tcp probe), finding fitting combinations of probes and waiting times 
