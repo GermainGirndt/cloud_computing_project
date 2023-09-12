@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: irmgard
-          image: germaingirndt/irmgard:latest # TODO: change to fixed version
+          image: germaingirndt/irmgard:1.0
           ports:
             - containerPort: 80
           resources:

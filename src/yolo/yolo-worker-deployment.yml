@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: facerecognition-yolo
-          image: germaingirndt/facerecognition-yolo:0.4 #TODO: set fixed version
+          image: germaingirndt/facerecognition-yolo:1.0
           resources:
             requests:
               cpu: 100m
@@ -22,15 +22,15 @@ spec:
             limits:
               cpu: 4000m
               memory: 8092Mi
-          startupProbe:  # no readiness probe since these pods are not bound to a svc
+          startupProbe: # no readiness probe since these pods are not bound to a svc
             exec:
-              command: 
+              command:
                 - ls
                 #- nonexistendFile #=> uncomment to simulate "failed pod"
             initialDelaySeconds: 45
             periodSeconds: 3
             failureThreshold: 3
-            timeoutSeconds: 2 
+            timeoutSeconds: 2
           livenessProbe:
             exec:
               command:
@@ -38,7 +38,7 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 5
             timeoutSeconds: 2
-            failureThreshold: 2    
+            failureThreshold: 2
           env:
             - name: OBJECT_STORE_HOST
               valueFrom:
