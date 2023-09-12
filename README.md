@@ -64,17 +64,24 @@ kubectl describe pods POD_NAME [-n namespace]
 kubectl delete pods irmgard-deployment-69cdf8bd5d-k8zn7
 kubectl logs irmgard-deployment-67f4c78cfb-sp9mk -n default -c irmgard --previous
 kubectl describe pod irmgard-deployment-67f4c78cfb-sp9mk -n default
-kubectl label pod postgres-0 role=primary, labels a pod so the headless svc can find the primary pod
-
 ```
 
 ```
-kubectl delete pods --all
-kubectl delete services --all
-kubectl delete statefulsets --all
+# labels a pod so the headless svc can find the primary pod
+kubectl label pod postgres-0 role=primary
+kubectl label pod minio-0 role=primary
+kubectl label pod rabbitmq-0 role=primary
+```
+
+```
 kubectl delete deployments --all
-kubectl delete persistentvolumeclaims --all
+kubectl delete statefulsets --all
 kubectl delete configmap --all
+kubectl delete services --all
+kubectl delete pods --all
+kubectl delete secrets --all
+kubectl delete persistentvolumeclaims --all
+kubectl delete persistentvolume --all
 ```
 
 ### Fresh start
