@@ -16,7 +16,7 @@ spec:
         - name: irmgard
           image: germaingirndt/irmgard:1.0
           ports:
-            - containerPort: 80
+            - containerPort: 80 # TODO: Discuss: Shouldn't it be 8080, since irmgard listens there?
           resources:
             requests: # min
               cpu: 100m # MilliCPU
@@ -26,20 +26,20 @@ spec:
               memory: 512Mi
           startupProbe:
             httpGet:
-              path: /     # /health for failed http request
-              port: 8080  
-            initialDelaySeconds: 45 # exact time given for postgres, minio, rabbitmq to start +15s => no crash loopback error bc 
-            periodSeconds: 4        # of not reachable pods due to slower startup
+              path: / # /health for failed http request
+              port: 8080
+            initialDelaySeconds: 45 # exact time given for postgres, minio, rabbitmq to start +15s => no crash loopback error bc
+            periodSeconds: 4 # of not reachable pods due to slower startup
             failureThreshold: 3 # max 12s startup time
             timeoutSeconds: 2
           readinessProbe: # gets only registered as the svc endpoint if probe finishes successfully
             httpGet:
-              path: /     # /health for failed http request
+              path: / # /health for failed http request
               port: 8080
             initialDelaySeconds: 5
-            periodSeconds: 5   # 5 to 11 ratio so readiness can check 2 times before liveness checks
+            periodSeconds: 5 # 5 to 11 ratio so readiness can check 2 times before liveness checks
             timeoutSeconds: 2
-          livenessProbe:       # => rather give tp pod a short time to maybe recover instead of restarting 
+          livenessProbe: # => rather give tp pod a short time to maybe recover instead of restarting
             #exec:
             httpGet:
               path: /
@@ -48,7 +48,7 @@ spec:
               #   - ls
               #   #- nonexistendFile #=> uncomment to simulate "failed pod"
             initialDelaySeconds: 10
-            timeoutSeconds: 2  # time allowed for the probe to finish, if not => pod counts as failed
+            timeoutSeconds: 2 # time allowed for the probe to finish, if not => pod counts as failed
             periodSeconds: 10
             failureThreshold: 2
           env:
