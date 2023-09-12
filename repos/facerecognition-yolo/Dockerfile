@@ -20,45 +20,42 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
   automake \
   libtool \
   build-essential \
+  cmake \
   git \
-  python3 python3-numpy python3-setuptools python3-pip\
   libopencv-dev opencv-data \
-  ruby-dev \
-  ruby \
   libxml2-dev \
   libcurl4-openssl-dev \
-  vim
+  vim \
+  python3 python3-numpy python3-setuptools python3-pip python3-dev \
+  ruby-dev ruby
+
+# both dependencies needed for opencv-python-headless
+RUN pip3 install scikit-build
+RUN pip3 install opencv-python
 
 # changed bundler version since install was throwing incompatibility error
 RUN gem install bundler -v 2.3.26
 
 RUN ruby -v
 
-COPY samples/bundeskanzler.jpg /workdir/object-detection-opencv/bundeskanzler.jpg
 COPY yolo_opencv.py /workdir/yolo_opencv.py
 COPY yolov3.cfg /workdir/yolov3.cfg
 COPY yolov3.txt  /workdir/yolov3.txt 
 COPY yolov3.weights /workdir/yolov3.weights
 
-
-# both dependencies needed for opencv-python-headless
-RUN pip3 install scikit-build
-RUN apt-get -y install --no-install-recommends \
-  cmake \
-  python3-dev
-RUN pip3 install opencv-python
-
-# Provides an exemplary original file for manual testing.
 RUN mkdir /tmp/object_recognition
-
-RUN cp /workdir/object-detection-opencv/bundeskanzler.jpg /tmp/object_recognition/original-image.jpg
 
 COPY Gemfile /workdir/Gemfile
 COPY worker.rb /workdir/worker.rb
 
+# Provides sample files for manual testing.
+COPY samples/bundeskanzler.jpg /workdir/object-detection-opencv/bundeskanzler.jpg
+COPY samples/captain_jack_sparrow.jpeg /workdir/object-detection-opencv/captain_jack_sparrow.jpeg
+
 RUN bundle
 
-# Recommended CMD
-# cd /workdir/ && python3 yolo_opencv.py --image /tmp/object_recognition/original-image.jpg --config yolov3.cfg --weights yolov3.weights --classes yolov3.txt 
-
 CMD ["ruby", "worker.rb"]
+
+# Recommended CMD to test
+# cp /workdir/object-detection-opencv/bundeskanzler.jpg /tmp/object_recognition/original-image.jpg
+# cd /workdir/ && python3 yolo_opencv.py --image /tmp/object_recognition/original-image.jpg --config yolov3.cfg --weights yolov3.weights --classes yolov3.txt 
