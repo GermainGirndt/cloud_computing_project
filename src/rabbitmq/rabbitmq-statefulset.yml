@@ -4,7 +4,7 @@ metadata:
   name: rabbitmq
 spec:
   serviceName: "rabbitmq-service"
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: rabbitmq
@@ -17,10 +17,29 @@ spec:
         - name: rabbitmq
           image: rabbitmq:3.9.29-management-alpine # latest low weight rabbitmq image as of 11.08.2023
           ports:
-            - name: http
+            - name: rabbitmq-http-p
               containerPort: 15672
-            - name: amqp
+            - name: rabbitmq-amqp-p
               containerPort: 5672
+          startupProbe:
+            tcpSocket:
+              port: 5672 # change port for failure demonstration
+            periodSeconds: 10
+            failureThreshold: 3
+            timeoutSeconds: 2
+          readinessProbe:
+            tcpSocket:
+              port: 5672
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 2
+          livenessProbe:
+            tcpSocket:
+              port: 5672
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 2
+            timeoutSeconds: 2
           env:
             - name: RABBITMQ_DEFAULT_USER
               valueFrom:
@@ -33,9 +52,21 @@ spec:
                   name: rabbitmq-secret
                   key: RABBITMQ_DEFAULT_PASS
           volumeMounts:
-            - name: rabbitmq-persistent-volume-claim
+            - name: rabbitmq-persistent-volume
               mountPath: /var/lib/rabbitmq/mnesia
-      volumes:
-        - name: rabbitmq-persistent-volume-claim
-          persistentVolumeClaim:
-            claimName: rabbitmq-persistent-volume-claim
+      # volumes:
+      #   - name: rabbitmq-persistent-volume-claim # now multiple "ways/roads (pods)"
+      #     persistentVolumeClaim: # can be used to retrieve/aknowledge messages/tasks
+      #       claimName: rabbitmq-persistent-volume-claim
+  volumeClaimTemplates:
+    - metadata:
+        name: rabbitmq-persistent-volume
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Gi
+# would be the optimal way to do it if we would have time for the synchronization
+# => each pod own pv => exact mapping for each pod, primary only manages requests/tasks with headless svc
+# => no problems regarding shared memory, consistency

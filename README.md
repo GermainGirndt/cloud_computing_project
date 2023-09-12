@@ -2,8 +2,7 @@
 
 # TODOs
 
-1 - Headless services for PostgresQL and MiniIO (one of the target instances set as primary)
-2 - Install the missing dependency for yolo_opencv and test if it worked: libgtk2.0-dev and pkg-config
+1 - Test (particularly stateful services)
 
 # Notes
 
@@ -65,16 +64,24 @@ kubectl describe pods POD_NAME [-n namespace]
 kubectl delete pods irmgard-deployment-69cdf8bd5d-k8zn7
 kubectl logs irmgard-deployment-67f4c78cfb-sp9mk -n default -c irmgard --previous
 kubectl describe pod irmgard-deployment-67f4c78cfb-sp9mk -n default
-
 ```
 
 ```
-kubectl delete pods --all
-kubectl delete services --all
-kubectl delete statefulsets --all
+# labels a pod so the headless svc can find the primary pod
+kubectl label pod postgres-0 role=primary
+kubectl label pod minio-0 role=primary
+kubectl label pod rabbitmq-0 role=primary
+```
+
+```
 kubectl delete deployments --all
-kubectl delete persistentvolumeclaims --all
+kubectl delete statefulsets --all
 kubectl delete configmap --all
+kubectl delete services --all
+kubectl delete pods --all
+kubectl delete secrets --all
+kubectl delete persistentvolumeclaims --all
+kubectl delete persistentvolume --all
 ```
 
 ### Fresh start
@@ -166,5 +173,18 @@ docker buildx build --platform linux/amd64,linux/arm64/v8 -t germaingirndt/facer
 - Since in the log was not clear where the error was, it took us time to understand, that the error was caused by Golang's variable scope (a variable was defined in the main method and we tried to reference it in another method; the error message didn't say that the variable wasn't defined, just the "Bucket name cannot be empty")
 - Since we use two difference architectures (amd x64 for ubuntu and arm for MacOS), we faced problems running the containers. We solved it by build for both architectures, but that took a lot of time (in the worst case 8h for building the yolo project)
 - Minio works locally and has the same API as AWS. Because of that with kubernetes we have the flexibility to switch to AWS very easily by creating another config map with specifications for AWS
+- debate over pvc template or pvc itself in sfs through a yaml file, synchronisation, minio and
+  postgres vs rabbitmq
+- setting up probes (finding out which ports to use for tcp probe), finding fitting combinations of probes and waiting times
 - Communication with the cluster from outside. Irmgard with LoadBalancer seems to be the most straight forward way. Other approaches (e.g. NodePort) requires configuring ingress
 - High container build time, when testing. We could optimize it by: i - building just for one architecture, testing and then building for the other one; ii - using the caching mechanism in a better way, by setting the unchanged container dependencies first in the Dockerfile, so that we just re-build the changed ones (e.g. the code).
+
+### Postgres
+
+```
+psql -U postgres
+\c
+\l
+\dt
+SELECT * FROM images;
+```

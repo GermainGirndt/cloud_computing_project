@@ -13,6 +13,8 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # Installation
 # TODO: set a fix dependency version for Python and Ruby (e.g. python=3.10.12; ruby= )
 RUN apt-get update && apt-get -y install --no-install-recommends \
+  python3 python3-numpy python3-setuptools python3-pip\
+  libopencv-dev opencv-data \
   pkg-config \
   libgtk2.0-dev \
   apt-utils \
@@ -31,6 +33,13 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
 
 # both dependencies needed for opencv-python-headless
 RUN pip3 install scikit-build
+RUN pip3 install opencv-python
+
+# both dependencies needed for opencv-python-headless
+RUN pip3 install scikit-build
+RUN apt-get -y install --no-install-recommends \
+  cmake \
+  python3-dev
 RUN pip3 install opencv-python
 
 # changed bundler version since install was throwing incompatibility error
