@@ -9,4 +9,4 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 8080 # TODO sollte hier nicht der Port von irmgard depl stehen, also 80?
+      targetPort: 8080

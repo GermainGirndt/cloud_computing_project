@@ -16,7 +16,7 @@ spec:
         - name: irmgard
           image: germaingirndt/irmgard:1.0
           ports:
-            - containerPort: 80 # TODO: Discuss: Shouldn't it be 8080, since irmgard listens there?
+            - containerPort: 80
           resources:
             requests: # min
               cpu: 100m # MilliCPU
