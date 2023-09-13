@@ -188,3 +188,20 @@ psql -U postgres
 \dt
 SELECT * FROM images;
 ```
+
+### Presentation
+
+- Demonstration: Namespace ('kubectl config get-contexts')
+- Demonstration: GET and POST requests with Postman
+- Demonstration: Yolo Container
+- Demonstration: MinIO -> Data
+- Projektorganisation (Germain)
+- Architecture Overview (Germain)
+- System Implementation overview (Aaron)
+- Dockerfiles, Docker Hub (Germain)
+- Scalling: Stateless (Aaron)
+- Scalling: Statefull (Germain)
+- System Robustness: failing Pods (Aaron)
+- Release (Germain)
+- Challenges (normal vs headless services, different architectures (arm vs amd))
+- Next steps (Synchronisation)
